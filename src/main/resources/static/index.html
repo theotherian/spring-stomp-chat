@@ -5,6 +5,13 @@
 <script src="sockjs-0.3.4.js"></script>
 <script src="stomp.js"></script>
 <script src="jquery-2.1.0.min.js"></script>
+<style>
+  .chat {
+    height: 200px;
+    width: 600px;
+    overflow-y: scroll;
+  }
+</style>
 </head>
 <body>
   <div>
@@ -23,7 +30,7 @@
         stompClient.connect('', '', function(frame) {
           console.log('Connected: ' + frame);
           stompClient.subscribe('/user/queue/greetings', function(greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+            showGreeting(JSON.parse(greeting.body));
           });
         });
       }
@@ -44,7 +51,8 @@
         var response = document.getElementById('response');
         var p = document.createElement('p');
         p.style.wordWrap = 'break-word';
-        p.appendChild(document.createTextNode(message));
+        p.appendChild(document.createTextNode(message.userName + ' says: '));
+        p.appendChild(document.createTextNode(message.content));
         response.appendChild(p);
       }
       

@@ -13,7 +13,7 @@ public class GreetingController {
 
   @MessageMapping("/hello")
   public void greeting(HelloMessage message) throws Exception {
-    template.convertAndSendToUser("ian", "/queue/greetings", new Greeting("Hello, " + message.getName() + "!"));
+    template.convertAndSendToUser("ian", "/queue/greetings", new Greeting("ian", "Hello, " + message.getName() + "!"));
   }
 
 }
