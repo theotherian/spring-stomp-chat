@@ -1,7 +1,5 @@
 package com.theotherian.chat;
 
-import java.security.Principal;
-
 import javax.inject.Inject;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -14,8 +12,9 @@ public class GreetingController {
   @Inject private SimpMessagingTemplate template;
 
   @MessageMapping("/hello")
-  public void greeting(HelloMessage message, Principal principal) throws Exception {
-    template.convertAndSendToUser("ian", "/topic/greetings", new Greeting("Hello, " + message.getName() + "!"));
+  public void greeting(HelloMessage message) throws Exception {
+    template.convertAndSendToUser("ian", "/queue/greetings", new Greeting("Hello, " + message.getName() + "!"));
+//    template.convertAndSend("/topic/greetings", new Greeting("Hello, " + message.getName() + "!"));
   }
 
 }

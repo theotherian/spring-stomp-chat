@@ -14,6 +14,7 @@
 
   <properties>
     <start-class>com.theotherian.chat.Application</start-class>
+    <spring.version>4.0.1.RELEASE</spring.version>
   </properties>
 
   <build>
