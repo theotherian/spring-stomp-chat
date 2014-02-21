@@ -27,6 +27,7 @@
     <div id="conversationDiv">
       <label>What is your name?</label><input type="text" id="name" />
       <button id="sendName" onclick="sendName();">Send</button>
+      <button id="activeUsers" onclick="getUsers();">get users</button>
       <p id="response"></p>
     </div>
   </div>
@@ -42,6 +43,10 @@
             showGreeting(JSON.parse(greeting.body));
           });
         });
+      }
+      
+      function getUsers() {
+        stompClient.send('/app/activeUsers', {}, '');
       }
 
       function disconnect() {
