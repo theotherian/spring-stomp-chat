@@ -64,15 +64,6 @@
         }));
       }
       
-      function whenSocketIsOpen(runCommand) {
-        if (socket.readyState === SockJS.OPEN) {
-          runCommand();
-        }
-        else {
-          setTimeout(function() { whenSocketIsOpen(runCommand); }, 100);
-        }
-      }
-
       function showGreeting(message) {
         var elementId = 'chat-' + message.userName;
         var selector = '#' + elementId;
@@ -85,9 +76,6 @@
       
       $(document).ready(function() {
         connect();
-        whenSocketIsOpen(function () {
-          stompClient.send('/app/activeUsers', {}, '');
-        });
       });
   </script>
 </body>
