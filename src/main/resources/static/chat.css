@@ -12,3 +12,13 @@
   left: -1px;
   padding: 10px 7px 5px;
 }
+
+#userList {
+	float: left;
+	width: 100px;
+	height: 200px;
+	overflow-y: scroll;
+  overflox-x: scroll;
+  border: 1px solid #DDDDDD;
+  border-radius: 4px 0 4px 0;
+}

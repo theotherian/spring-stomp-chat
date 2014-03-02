@@ -9,6 +9,8 @@
 </head>
 <body>
   <div>
+    <div id="userList">
+    </div>
     <div id="conversationDiv">
       <label>What is your name?</label><input type="text" id="name" />
       <button id="sendName" onclick="sendName();">Send</button>
@@ -34,7 +36,19 @@
       }
       
       function showActive(activeMembers) {
+        renderActive(activeMembers.body);
         stompClient.send('/app/activeUsers', {}, '');
+      }
+      
+      function renderActive(activeMembers) {
+        var userDiv = $('<div>', {id: 'users'});
+        $.each($.parseJSON(activeMembers), function(index, value) {
+          var userSpan = $('<span>', {id: 'user-' + value});
+          userSpan.html(value);
+          userDiv.append(userSpan).append($('<br>'));
+        });
+        $('#userList').html(userDiv);
+        console.log(activeMembers);
       }
       
       function disconnect() {
