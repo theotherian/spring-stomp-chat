@@ -2,6 +2,7 @@ package com.theotherian.chat;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -36,6 +37,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public boolean configureMessageConverters(List<MessageConverter> converters) {
     return true;
+  }
+  
+  @Bean
+  public ActiveUserService activeUserService() {
+    return new ActiveUserService();
   }
 
 }

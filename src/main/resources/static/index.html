@@ -43,13 +43,13 @@
             showGreeting(JSON.parse(greeting.body));
           });
           stompClient.subscribe('/topic/active', function(activeMembers) {
-            showActive();
+            showActive(activeMembers);
           });
         });
       }
       
-      function showActive() {
-        alert('omg');
+      function showActive(activeMembers) {
+        stompClient.send('/app/activeUsers', {}, '');
       }
       
       function disconnect() {

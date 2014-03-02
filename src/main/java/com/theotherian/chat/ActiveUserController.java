@@ -1,25 +1,28 @@
 package com.theotherian.chat;
 
+import java.security.Principal;
+
 import javax.inject.Inject;
 
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class ActiveUserController {
   
-  private SimpMessagingTemplate template;
+  private ActiveUserService activeUserService;
 
   @Inject
-  public ActiveUserController(SimpMessagingTemplate template) {
-    this.template = template;
+  public ActiveUserController(ActiveUserService activeUserService) {
+    this.activeUserService = activeUserService;
   }
   
   @MessageMapping("/activeUsers")
-  public void activeUsers() {
-    System.out.println("hit");
-    template.convertAndSend("/topic/active", new Greeting("wow", "such active"));
+  public void activeUsers(Message<Object> message) {
+    Principal user = message.getHeaders().get(SimpMessageHeaderAccessor.USER_HEADER, Principal.class);
+    activeUserService.mark(user.getName());
   }
 
 }
