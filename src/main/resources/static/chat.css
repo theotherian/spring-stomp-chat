@@ -22,3 +22,21 @@
   border: 1px solid #DDDDDD;
   border-radius: 4px 0 4px 0;
 }
+
+.chat-container {
+	position: relative;
+	float: left;
+}
+
+.chat-input {
+	bottom: 0;
+	float: left;
+}
+
+.chat-submit {
+  bottom: 0;
+  height: 31px;
+  width: 60px;
+  float: right;
+  margin-top: 2px;
+}

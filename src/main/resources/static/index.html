@@ -45,6 +45,9 @@
         $.each($.parseJSON(activeMembers), function(index, value) {
           var userSpan = $('<span>', {id: 'user-' + value});
           userSpan.html(value);
+          userSpan.dblclick(function() {
+            getChatWindow(value);
+          });
           userDiv.append(userSpan).append($('<br>'));
         });
         $('#userList').html(userDiv);
@@ -63,14 +66,37 @@
         }));
       }
       
-      function showGreeting(message) {
-        var elementId = 'chat-' + message.userName;
+      function getChatWindow(userName) {
+        var elementId = 'chat-' + userName;
         var selector = '#' + elementId;
         if (!$(selector).length) {
-          $('body').append('<div id="' + elementId + '" class="chat"></div>');
+          var chatContainer = $('<div>', {id: elementId + '-container', class: 'chat-container'});
+          var chatWindow = $('<div>', {id: elementId, class: 'chat'});
+          var chatInput = $('<textarea>', {id: 'input-' + elementId, type: 'text', class: 'chat-input', rows: '2', cols: '75'});
+          var chatSubmit = $('<button>', {id: 'submit-' + elementId, type: 'submit', class: 'chat-submit'})
+          chatSubmit.html('Send');
+          
+          chatInput.keypress(function(event) {
+            if (event.which == 13) {
+              event.preventDefault();
+              sendName();
+              $('#input-' + elementId).val('');
+            }
+          });
+          
+          chatContainer.append(chatWindow);
+          chatContainer.append(chatInput);
+          chatContainer.append(chatSubmit);
+          
+          $('body').append(chatContainer);
         }
-        $(selector).append('<span>' + message.userName + ' says: </span><span>' + message.content + '</span><br/>');
-        $(selector).animate({ scrollTop: $(selector)[0].scrollHeight}, 1);
+        return $(selector);
+      }
+      
+      function showGreeting(message) {
+        var chatWindow = getChatWindow(message.userName);
+        chatWindow.append('<span>' + message.userName + ' says: </span><span>' + message.content + '</span><br/>');
+        chatWindow.animate({ scrollTop: chatWindow[0].scrollHeight}, 1);
       }
       
       $(document).ready(function() {
