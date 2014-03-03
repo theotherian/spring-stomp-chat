@@ -13,7 +13,7 @@
     </div>
     <div id="conversationDiv">
       <label>What is your name?</label><input type="text" id="name" />
-      <button id="sendName" onclick="sendName();">Send</button>
+      <button id="sendName" onclick="sendMessageTo('ian');">Send</button>
       <p id="response"></p>
     </div>
   </div>
@@ -59,29 +59,38 @@
         console.log("Disconnected");
       }
 
-      function sendName() {
-        var name = document.getElementById('name').value;
+      function sendMessageTo(user) {
+        var chatInput = '#input-chat-' + user;
+        var message = $(chatInput).val();
         stompClient.send("/app/hello", {}, JSON.stringify({
-          'name' : name
+          'name' : message
         }));
+        $(chatInput).val('');
+        $(chatInput).focus();
       }
       
       function getChatWindow(userName) {
         var elementId = 'chat-' + userName;
         var selector = '#' + elementId;
+        var inputId = 'input-' + elementId;
         if (!$(selector).length) {
           var chatContainer = $('<div>', {id: elementId + '-container', class: 'chat-container'});
           var chatWindow = $('<div>', {id: elementId, class: 'chat'});
-          var chatInput = $('<textarea>', {id: 'input-' + elementId, type: 'text', class: 'chat-input', rows: '2', cols: '75'});
+          var chatInput = $('<textarea>', {id: inputId, type: 'text', class: 'chat-input', rows: '2', cols: '75'});
           var chatSubmit = $('<button>', {id: 'submit-' + elementId, type: 'submit', class: 'chat-submit'})
           chatSubmit.html('Send');
           
           chatInput.keypress(function(event) {
             if (event.which == 13) {
+              var user = event.currentTarget.id.substring(11); // gets rid of 'input-chat-'
               event.preventDefault();
-              sendName();
-              $('#input-' + elementId).val('');
+              sendMessageTo(user);
             }
+          });
+          
+          chatSubmit.click(function(event) {
+            var user = event.currentTarget.id.substring(12); // gets rid of 'submit-chat-'
+            sendMessageTo(user);
           });
           
           chatContainer.append(chatWindow);
