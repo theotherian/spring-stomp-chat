@@ -11,20 +11,17 @@
   <div>
     <div id="userList">
     </div>
-    <div id="conversationDiv">
-      <label>What is your name?</label><input type="text" id="name" />
-      <button id="sendName" onclick="sendMessageTo('ian');">Send</button>
-      <p id="response"></p>
-    </div>
   </div>
   <script type="text/javascript">
       var stompClient = null;
       var socket = null;
+      var whoami = null;
       
       function connect() {
         socket = new SockJS('/hello');
         stompClient = Stomp.over(socket);
         stompClient.connect('', '', function(frame) {
+          whoami = frame.headers['user-name'];
           console.log('Connected: ' + frame);
           stompClient.subscribe('/user/queue/greetings', function(greeting) {
             showGreeting(JSON.parse(greeting.body));
@@ -63,7 +60,8 @@
         var chatInput = '#input-chat-' + user;
         var message = $(chatInput).val();
         stompClient.send("/app/hello", {}, JSON.stringify({
-          'name' : message
+          'recipient': user,
+          'message' : message
         }));
         $(chatInput).val('');
         $(chatInput).focus();
@@ -103,8 +101,9 @@
       }
       
       function showGreeting(message) {
-        var chatWindow = getChatWindow(message.userName);
-        chatWindow.append('<span>' + message.userName + ' says: </span><span>' + message.content + '</span><br/>');
+        var chatWindowTarget = (message.recipient === whoami) ? message.sender : message.recipient;
+        var chatWindow = getChatWindow(chatWindowTarget);
+        chatWindow.append('<span>' + message.sender + ' says: </span><span>' + message.message + '</span><br/>');
         chatWindow.animate({ scrollTop: chatWindow[0].scrollHeight}, 1);
       }
       
