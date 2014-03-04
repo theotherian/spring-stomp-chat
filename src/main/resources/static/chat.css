@@ -1,11 +1,14 @@
+body {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
 .chat {
   height: 200px;
   width: 600px;
   overflow-y: scroll;
-  overflox-x: hidden;
   background-color: #F5F5F5;
-  border: 1px solid #DDDDDD;
-  border-radius: 4px 0 4px 0;
+  border: 3px solid #4F5522;
+  border-radius: 5px;
   color: #3B3C3E;
   font-size: 12px;
   font-weight: bold;
@@ -16,11 +19,12 @@
 #userList {
 	float: left;
 	width: 100px;
-	height: 200px;
+	height: 254px;
+	margin-right: 10px;
 	overflow-y: scroll;
   overflox-x: scroll;
   border: 1px solid #DDDDDD;
-  border-radius: 4px 0 4px 0;
+  border-radius: 5px;
 }
 
 .chat-container {
@@ -31,6 +35,7 @@
 .chat-input {
 	bottom: 0;
 	float: left;
+	border-radius: 5px;
 }
 
 .chat-submit {
@@ -39,4 +44,11 @@
   width: 60px;
   float: right;
   margin-top: 2px;
+}
+
+#users {
+	height: 200%;
+	width: 100%;
+	overflow: auto;
+	border: 0px;
 }

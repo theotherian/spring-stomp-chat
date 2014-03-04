@@ -38,15 +38,20 @@
       }
       
       function renderActive(activeMembers) {
-        var userDiv = $('<div>', {id: 'users'});
-        $.each($.parseJSON(activeMembers), function(index, value) {
-          var userSpan = $('<span>', {id: 'user-' + value});
-          userSpan.html(value);
-          userSpan.dblclick(function() {
-            getChatWindow(value);
+        var previouslySelected = $('#users option:selected').val();
+        var members = $.parseJSON(activeMembers);
+        var userDiv = $('<select>', {id: 'users', multiple: 'multiple'});
+        $.each(members, function(index, value) {
+          var userOption = $('<option>', {id: 'user-' + value, value: 'user-' + value});
+          userOption.html(value);
+          userOption.click(function() {
+            $('.chat-container').hide();
+            var chatWindow = getChatWindow(value);
+            chatWindow.show();
           });
-          userDiv.append(userSpan).append($('<br>'));
+          userDiv.append(userOption);
         });
+        userDiv.val(previouslySelected);
         $('#userList').html(userDiv);
         console.log(activeMembers);
       }
@@ -69,12 +74,14 @@
       
       function getChatWindow(userName) {
         var elementId = 'chat-' + userName;
-        var selector = '#' + elementId;
+        var containerId = elementId + '-container';
+        var selector = '#' + containerId;
         var inputId = 'input-' + elementId;
         if (!$(selector).length) {
-          var chatContainer = $('<div>', {id: elementId + '-container', class: 'chat-container'});
+          var chatContainer = $('<div>', {id: containerId, class: 'chat-container'});
           var chatWindow = $('<div>', {id: elementId, class: 'chat'});
-          var chatInput = $('<textarea>', {id: inputId, type: 'text', class: 'chat-input', rows: '2', cols: '75'});
+          var chatInput = $('<textarea>', {id: inputId, type: 'text', class: 'chat-input', rows: '2', cols: '75', 
+            placeholder: 'Enter a message.  Something deep and meaningful.  Something you can be proud of.'});
           var chatSubmit = $('<button>', {id: 'submit-' + elementId, type: 'submit', class: 'chat-submit'})
           chatSubmit.html('Send');
           
@@ -102,7 +109,8 @@
       
       function showGreeting(message) {
         var chatWindowTarget = (message.recipient === whoami) ? message.sender : message.recipient;
-        var chatWindow = getChatWindow(chatWindowTarget);
+        var chatContainer = getChatWindow(chatWindowTarget);
+        var chatWindow = chatContainer.children('.chat');
         chatWindow.append('<span>' + message.sender + ' says: </span><span>' + message.message + '</span><br/>');
         chatWindow.animate({ scrollTop: chatWindow[0].scrollHeight}, 1);
       }
