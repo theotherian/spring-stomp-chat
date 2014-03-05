@@ -38,20 +38,34 @@
       }
       
       function renderActive(activeMembers) {
-        var previouslySelected = $('#users option:selected').val();
+        var previouslySelected = $('.user-selected').text();
         var members = $.parseJSON(activeMembers);
-        var userDiv = $('<select>', {id: 'users', multiple: 'multiple'});
+        var userDiv = $('<div>', {id: 'users'});
         $.each(members, function(index, value) {
-          var userOption = $('<option>', {id: 'user-' + value, value: 'user-' + value});
+          if (value === whoami) {
+            return true;
+          }
+          var userOption = $('<span>', {id: 'user-' + value});
+          userOption.addClass('user-entry');
+          if (previouslySelected === value) {
+            userOption.addClass('user-selected');
+          }
+          else {
+            userOption.addClass('user-unselected');
+          }
           userOption.html(value);
           userOption.click(function() {
+            var foo = this;
             $('.chat-container').hide();
+            $('.user-entry').removeClass('user-selected');
+            $('.user-entry').addClass('user-unselected');
+            userOption.removeClass('user-unselected');
+            userOption.addClass('user-selected');
             var chatWindow = getChatWindow(value);
             chatWindow.show();
           });
-          userDiv.append(userOption);
+          userDiv.append(userOption).append('<br/>');
         });
-        userDiv.val(previouslySelected);
         $('#userList').html(userDiv);
         console.log(activeMembers);
       }
@@ -64,6 +78,9 @@
       function sendMessageTo(user) {
         var chatInput = '#input-chat-' + user;
         var message = $(chatInput).val();
+        if (!message.length) {
+          return;
+        }
         stompClient.send("/app/hello", {}, JSON.stringify({
           'recipient': user,
           'message' : message
@@ -111,7 +128,12 @@
         var chatWindowTarget = (message.recipient === whoami) ? message.sender : message.recipient;
         var chatContainer = getChatWindow(chatWindowTarget);
         var chatWindow = chatContainer.children('.chat');
-        chatWindow.append('<span>' + message.sender + ' says: </span><span>' + message.message + '</span><br/>');
+        var userDisplay = $('<span>', {class: (message.sender === whoami ? 'chat-sender' : 'chat-recipient')});
+        userDisplay.html(message.sender + ' says: ');
+        var messageDisplay = $('<span>');
+        messageDisplay.html(message.message);
+        //chatWindow.append('<span>' + message.sender + ' says: </span><span>' + message.message + '</span><br/>');
+        chatWindow.append(userDisplay).append(messageDisplay).append('<br/>');
         chatWindow.animate({ scrollTop: chatWindow[0].scrollHeight}, 1);
       }
       
