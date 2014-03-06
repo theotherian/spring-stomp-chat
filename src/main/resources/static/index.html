@@ -101,6 +101,7 @@
       }
       
       function getChatWindow(userName) {
+        var existingChats = $('.chat-container');
         var elementId = 'chat-' + userName;
         var containerId = elementId + '-container';
         var selector = '#' + containerId;
@@ -129,6 +130,10 @@
           chatContainer.append(chatWindow);
           chatContainer.append(chatInput);
           chatContainer.append(chatSubmit);
+          
+          if (existingChats.length) {
+            chatContainer.hide();
+          }
           
           $('body').append(chatContainer);
         }
