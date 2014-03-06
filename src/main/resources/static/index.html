@@ -153,7 +153,7 @@
         chatWindow.animate({ scrollTop: chatWindow[0].scrollHeight}, 1);
         if (message.sender !== whoami) {
           var sendingUser = $('#user-' + message.sender);
-          if (!sendingUser.hasClass('user-selected')) {
+          if (!sendingUser.hasClass('user-selected') && !sendingUser.hasClass('pending-messages')) {
             sendingUser.append(newMessageIcon());
             sendingUser.addClass('pending-messages');
           }
