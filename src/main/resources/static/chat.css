@@ -46,7 +46,7 @@ body {
 	float: left;
 	border-radius: 5px;
 	border: 3px solid #9932CC;
-	outline-width: 0;
+	outline: none;
 }
 
 .chat-submit {
@@ -71,10 +71,6 @@ body {
 	border: 0px;
 }
 
-.user-entry {
-	display: block;
-}
-
 .user-selected {
 	background-color: #6495ED;
 	color: white;
@@ -83,4 +79,10 @@ body {
 .user-unselected {
 	background-color: white;
   color: black;
+}
+
+.newmessage {
+	float: right;
+	font-size: 20px;
+	line-height: 70%;
 }

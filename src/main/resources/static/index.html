@@ -39,35 +39,46 @@
       
       function renderActive(activeMembers) {
         var previouslySelected = $('.user-selected').text();
+        var usersWithPendingMessages = new Object();
+        $.each($('.pending-messages'), function(index, value) {
+          usersWithPendingMessages[value.id.substring(5)] = true; // strip the user-
+        });
         var members = $.parseJSON(activeMembers);
         var userDiv = $('<div>', {id: 'users'});
         $.each(members, function(index, value) {
           if (value === whoami) {
             return true;
           }
-          var userOption = $('<span>', {id: 'user-' + value});
-          userOption.addClass('user-entry');
+          var userLine = $('<div>', {id: 'user-' + value});
+          userLine.addClass('user-entry');
           if (previouslySelected === value) {
-            userOption.addClass('user-selected');
+            userLine.addClass('user-selected');
           }
           else {
-            userOption.addClass('user-unselected');
+            userLine.addClass('user-unselected');
           }
-          userOption.html(value);
-          userOption.click(function() {
+          var userNameDisplay = $('<span>');
+          userNameDisplay.html(value);
+          userLine.append(userNameDisplay);
+          userLine.click(function() {
             var foo = this;
             $('.chat-container').hide();
             $('.user-entry').removeClass('user-selected');
             $('.user-entry').addClass('user-unselected');
-            userOption.removeClass('user-unselected');
-            userOption.addClass('user-selected');
+            userLine.removeClass('user-unselected');
+            userLine.removeClass('pending-messages');
+            userLine.addClass('user-selected');
+            userLine.children('.newmessage').remove();
             var chatWindow = getChatWindow(value);
             chatWindow.show();
           });
-          userDiv.append(userOption).append('<br/>');
+          if (value in usersWithPendingMessages) {
+            userLine.append(newMessageIcon());
+            userLine.addClass('pending-messages');
+          }
+          userDiv.append(userLine);
         });
         $('#userList').html(userDiv);
-        console.log(activeMembers);
       }
       
       function disconnect() {
@@ -135,6 +146,19 @@
         //chatWindow.append('<span>' + message.sender + ' says: </span><span>' + message.message + '</span><br/>');
         chatWindow.append(userDisplay).append(messageDisplay).append('<br/>');
         chatWindow.animate({ scrollTop: chatWindow[0].scrollHeight}, 1);
+        if (message.sender !== whoami) {
+          var sendingUser = $('#user-' + message.sender);
+          if (!sendingUser.hasClass('user-selected')) {
+            sendingUser.append(newMessageIcon());
+            sendingUser.addClass('pending-messages');
+          }
+        }
+      }
+      
+      function newMessageIcon() {
+        var newMessage = $('<span>', {class: 'newmessage'});
+        newMessage.html('&#x2709;');
+        return newMessage;
       }
       
       $(document).ready(function() {
