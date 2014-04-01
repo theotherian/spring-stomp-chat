@@ -10,6 +10,10 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
+/**
+ * Override the scheduling configuration so that we can schedule our own scheduled bean and
+ * so that Spring's STOMP scheduling can continue to work
+ */
 @Configuration
 @EnableScheduling
 public class ChatSchedulingConfigurer implements SchedulingConfigurer {
