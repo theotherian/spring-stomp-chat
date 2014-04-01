@@ -16,17 +16,17 @@ public class GreetingController {
   
   @Inject private SimpMessagingTemplate template;
 
-  @MessageMapping("/hello")
+  @MessageMapping("/chat")
   public void greeting(Message<Object> message, @Payload ChatMessage chatMessage) throws Exception {
     Principal principal = message.getHeaders().get(SimpMessageHeaderAccessor.USER_HEADER, Principal.class);
     String authedSender = principal.getName();
     chatMessage.setSender(authedSender);
     String recipient = chatMessage.getRecipient();
     if (!authedSender.equals(recipient)) {
-      template.convertAndSendToUser(authedSender, "/queue/greetings", chatMessage);
+      template.convertAndSendToUser(authedSender, "/queue/messages", chatMessage);
     }
     
-    template.convertAndSendToUser(recipient, "/queue/greetings", chatMessage);
+    template.convertAndSendToUser(recipient, "/queue/messages", chatMessage);
   }
 
 }

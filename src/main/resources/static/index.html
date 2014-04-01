@@ -18,13 +18,13 @@
       var whoami = null;
       
       function connect() {
-        socket = new SockJS('/hello');
+        socket = new SockJS('/chat');
         stompClient = Stomp.over(socket);
         stompClient.connect('', '', function(frame) {
           whoami = frame.headers['user-name'];
           console.log('Connected: ' + frame);
-          stompClient.subscribe('/user/queue/greetings', function(greeting) {
-            showGreeting(JSON.parse(greeting.body));
+          stompClient.subscribe('/user/queue/messages', function(message) {
+            showMessage(JSON.parse(message.body));
           });
           stompClient.subscribe('/topic/active', function(activeMembers) {
             showActive(activeMembers);
@@ -92,7 +92,7 @@
         if (!message.length) {
           return;
         }
-        stompClient.send("/app/hello", {}, JSON.stringify({
+        stompClient.send("/app/chat", {}, JSON.stringify({
           'recipient': user,
           'message' : message
         }));
@@ -140,7 +140,7 @@
         return $(selector);
       }
       
-      function showGreeting(message) {
+      function showMessage(message) {
         var chatWindowTarget = (message.recipient === whoami) ? message.sender : message.recipient;
         var chatContainer = getChatWindow(chatWindowTarget);
         var chatWindow = chatContainer.children('.chat');
