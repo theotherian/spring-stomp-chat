@@ -12,7 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class GreetingController {
+public class MessageController {
   
   @Inject private SimpMessagingTemplate template;
 
