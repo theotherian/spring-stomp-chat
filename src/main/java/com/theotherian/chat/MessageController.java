@@ -14,7 +14,12 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class MessageController {
   
-  @Inject private SimpMessagingTemplate template;
+  private SimpMessagingTemplate template;
+  
+  @Inject
+  public MessageController(SimpMessagingTemplate template) {
+    this.template = template;
+  }
 
   @MessageMapping("/chat")
   public void greeting(Message<Object> message, @Payload ChatMessage chatMessage) throws Exception {
