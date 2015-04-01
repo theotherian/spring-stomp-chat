@@ -1,9 +1,6 @@
 package com.theotherian.chat;
 
-import java.security.Principal;
-
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -11,15 +8,13 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 @Controller
 public class MessageController {
-  
+
+  @Autowired
   private SimpMessagingTemplate template;
-  
-  @Inject
-  public MessageController(SimpMessagingTemplate template) {
-    this.template = template;
-  }
 
   @MessageMapping("/chat")
   public void greeting(Message<Object> message, @Payload ChatMessage chatMessage) throws Exception {

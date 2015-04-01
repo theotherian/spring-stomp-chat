@@ -1,13 +1,15 @@
 package com.theotherian.chat;
 
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Sets;
+import org.springframework.stereotype.Component;
 
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
+
+@Component
 public class ActiveUserService {
   
   private LoadingCache<String, UserStats> statsByUser = CacheBuilder.newBuilder().build(new CacheLoader<String, UserStats>() {

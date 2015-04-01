@@ -1,14 +1,12 @@
 package com.theotherian.chat;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Set up Spring boot and launch the application
  */
-@ComponentScan
-@EnableAutoConfiguration
+@SpringBootApplication
 public class Application {
 
   public static void main(String[] args) {
