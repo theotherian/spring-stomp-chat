@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.*;
  * An extremely basic auth setup for the sake of a demo project
  */
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
