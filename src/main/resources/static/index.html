@@ -5,12 +5,20 @@
 <script src="sockjs-0.3.4.js"></script>
 <script src="stomp.js"></script>
 <script src="jquery-2.1.0.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 <link href="chat.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div>
     <div id="userList">
     </div>
+   	<div class="alert alert-info" style="position:absolute; bottom:0;">
+		<div id="login-output" style="margin-top: 10px;">
+		Please note you need two users logged in to use this application.<br/>
+		One user must selec the other shown in the pick list to open the chat windows.
+		</div>
+	</div> 
   </div>
   <script type="text/javascript">
       var stompClient = null;
