@@ -10,15 +10,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomAuthenticationProvider
   implements AuthenticationProvider {
+	
+	private static final String DEFAULT_USER_ROLE = "USER";
  
     @Override
     public Authentication authenticate(Authentication authentication) {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
         
-        return new UsernamePasswordAuthenticationToken(
-          name, password, Collections.singletonList(
-        		  new SimpleGrantedAuthority("USER")));
+        return new UsernamePasswordAuthenticationToken(name, password, 
+        		Collections.singletonList(new SimpleGrantedAuthority(DEFAULT_USER_ROLE)));
     }
  
     @Override
